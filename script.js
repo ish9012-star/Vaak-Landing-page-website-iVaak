@@ -65,7 +65,7 @@ betaForm.addEventListener('submit', async (e) => {
         // await sendToGoogleSheets(formData);
         
         // Option 2: Send to your email via a service
-        await sendBetaSignup(formData);
+        await sendToGoogleSheets(formData);
         
         // Show success message
         betaForm.style.display = 'none';
@@ -87,43 +87,13 @@ betaForm.addEventListener('submit', async (e) => {
     }
 });
 
-// ==================== //
-// Beta Signup Submission Functions
-// ==================== //
-
-/**
- * Option 1: Send to email using FormSubmit.co (No backend needed)
- * Just replace YOUR_EMAIL with your actual email
- */
-async function sendBetaSignup(formData) {
-    const response = await fetch('https://formsubmit.co/ajax/YOUR_EMAIL@gmail.com', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            platform: formData.platform,
-            _subject: 'New Vaak Beta Signup!',
-            _template: 'table'
-        })
-    });
-    
-    if (!response.ok) {
-        throw new Error('Form submission failed');
-    }
-    
-    return response.json();
-}
 
 /**
  * Option 2: Send to Google Sheets via Google Apps Script
  * You'll need to create a Google Apps Script web app first
  */
 async function sendToGoogleSheets(formData) {
-    const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwkySrbC6XevzMqSuOWT516yxTcK2g6nYM8WJc2KmELvD3EDFhL0IjXUGESGXkJfzOv/exec';
     
     const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
@@ -138,27 +108,6 @@ async function sendToGoogleSheets(formData) {
     return { success: true };
 }
 
-/**
- * Option 3: Send to your Vaak backend API
- * Uncomment and modify if you want to store signups in your database
- */
-/*
-async function sendToVaakBackend(formData) {
-    const response = await fetch('https://vaak-deploy-fresh.onrender.com/api/v1/beta-signups', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-    });
-    
-    if (!response.ok) {
-        throw new Error('Backend submission failed');
-    }
-    
-    return response.json();
-}
-*/
 
 // ==================== //
 // Intersection Observer for Animations
@@ -237,14 +186,12 @@ window.addEventListener('load', animateWidget);
 // ==================== //
 console.log('%cੴ Vaak - Sacred Wisdom for Daily Life', 'font-size: 20px; font-weight: bold; color: #D4AF37;');
 console.log('%cBuilt with 🙏 for the global Sikh community', 'font-size: 14px; color: #666;');
-console.log('%cInterested in the tech? Check out our API: https://vaak-deploy-fresh.onrender.com/api/v1/health', 'font-size: 12px; color: #4A90E2;');
 
 // ==================== //
 // Export functions for testing (optional)
 // ==================== //
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
-        sendBetaSignup,
         validateEmail
     };
 }
